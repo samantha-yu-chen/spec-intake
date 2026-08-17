@@ -1,0 +1,12 @@
+# Third-party reference material — read locally, never committed.
+# Waki Second Brain project packs: source of elicitation ideas for Layer 1a
+# (staged gates, bounded choices, blind-spot work). Licensed course material,
+# not ours to redistribute.
+Waki_Second_Brain_UK_English_Package/
+
+node_modules/
+dist/
+.env
+.env.*
+*.log
+.DS_Store
