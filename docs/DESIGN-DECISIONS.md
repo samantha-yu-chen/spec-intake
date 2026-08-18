@@ -7,7 +7,7 @@ to be **built** before the prototype means anything.
 Resolved questions have been removed. If something is not here and not in
 `CLAUDE.md`, it is not an open item.
 
-Last revised 2026-08-17.
+Last revised 2026-08-18.
 
 ---
 
@@ -44,8 +44,9 @@ rather than a rewrite.
 
 ## To build in v1
 
-Things the design now requires that do not exist yet. Not gaps in the thinking —
-work.
+Things the design requires. The first prototype slice built B1–B5 and part of
+B6; each entry below now carries where it lives and what is still missing from
+it. Nothing here is finished until a real conversation has been through it.
 
 ### B1. The reveal
 
@@ -58,6 +59,11 @@ gate (`CLAUDE.md` § 5). Ordered to make rejection easy:
 4. what the requester declined to answer;
 5. then the human-spec, the trace map, and the tech-spec.
 
+**Built.** `intake/reveal.ts` derives all four lists from the event log;
+`web/src/Reveal.tsx` renders them in that order with the approve button below
+them. Typing anything at the gate reopens the conversation and drops the
+documents (`intake/engine.ts`).
+
 ### B2. The downstream-panel interrogation
 
 The agent's own precondition for being allowed to declare done
@@ -69,6 +75,14 @@ stated fallback before the conversation can end.
 
 Divergence is mandatory **in the conversation** and absent **from the artifact**.
 A slot has exactly one answer; never "two perspectives, pick one later."
+
+**Built, with one deviation.** `intake/panel.md` holds the eight seats and the
+three exits (ask the requester, take it as a fork with a fallback, record it as
+an assumption). The phase machine makes the panel unskippable: the reveal is
+reachable only from `panel`. **Not built:** selecting the smallest useful panel
+for the work type — every conversation currently convenes all eight seats. That
+is a cost the prototype accepts in exchange for never under-convening while the
+elicitation is still being tuned.
 
 ### B3. Two questions nobody volunteers
 
@@ -84,6 +98,13 @@ Both belong in the human-spec, in the requester's own language:
   project**, not per spec — re-asking guarantees rubber-stamping, which is worse
   than not asking.
 
+**Built as slots.** Both are required fields on the human-spec schema
+(`intake/spec.ts`: `half_value`, `blast_radius_ceiling`), so the documents
+cannot be generated without them. **Not built:** eliciting the ceiling once per
+project — there is no cross-conversation memory in the prototype, so every
+conversation asks it. This is the rubber-stamping risk the entry warns about,
+and it is accepted only until the deferred cross-conversation memory exists.
+
 ### B4. Acceptance criteria must be machine-adjudicable
 
 A criterion whose verification is "a human reviews it" is a stall that, by
@@ -94,6 +115,12 @@ goes red."
 
 **Pre-commit the judgement, not the judge.**
 
+**Built as a schema requirement.** Every acceptance criterion carries
+`adjudicated_by` — the named test, command or query that decides it
+(`intake/spec.ts`). A criterion with no nameable check cannot be written down.
+Whether the named check is a *real* one is not mechanically verifiable here; it
+becomes verifiable at 1b or L3.
+
 ### B5. Fatigue detection
 
 No cost cap means the replacement control is a fatigue signal: shortening
@@ -101,12 +128,86 @@ answers, rising agreement, corrections stopping (`CLAUDE.md` § 13). Pause and
 resume rather than pushing harder. Companion metric: the ratio of human-stated to
 agent-drafted content in the finished spec.
 
+**Built.** `intake/fatigue.ts` fires on three very short answers, answers
+halving turn on turn, or three turns with nothing recorded, and injects an
+operator instruction to stop and offer to resume. The ratio is computed in
+`intake/reveal.ts` and shown on the gate screen. **The thresholds are guesses**
+— three turns, forty characters — and the first real conversation is what
+calibrates them. Per `CLAUDE.md`, when a guard trips wrongly the fix is the
+code, not the threshold; that rule does not apply to a number that has never
+been calibrated at all, so tuning these once against real transcripts is
+expected and should be recorded here when it happens.
+
 ### B6. Stance switching by technical fluency
 
 Same door for everyone, different posture. For a fluent engineer the draft-first
 approach is friction: switch from *"I draft, you correct"* to *"you state, I
 challenge."* Nearly free with a frontier model, and it is what keeps "one door"
 from meaning "one script."
+
+**Partly built.** `intake/instructions.md` tells the agent to match the
+requester's language and never make a non-technical requester answer a
+technical question, and to challenge a stated preference rather than validate
+it. There is no explicit fluency detection and no posture switch beyond that —
+the model is trusted to read the room, which is exactly the kind of claim the
+prototype exists to test.
+
+---
+
+## Decisions taken while building the first slice
+
+Settled by building. Each is a choice that could have gone another way.
+
+### D3. The phase is the gate, and it lives in the store
+
+`gathering → panel → reveal → approved → submitted`, with `frozen` terminal and
+reachable only from `submitted` (`intake/phase.ts`). Every transition not named
+is refused, so admitting a new one is deliberate. The agent gets two tools —
+`begin_panel` and `open_reveal` — that *ask* to move; the machine decides. The
+practical effect is that the panel cannot be skipped and the reveal cannot be
+reached from gathering, however confident the model is.
+
+### D4. The drift check gates the reveal, not the submit
+
+`open_reveal` generates both documents and runs the bidirectional trace check
+before the gate screen opens. Findings go back to the agent as a tool error and
+the reveal stays shut (`intake/documents.ts`, up to three attempts). Checking at
+submit instead would have meant showing the requester documents that cannot
+ship, and asking them to approve something a machine was about to reject.
+
+### D5. Anything typed at the reveal reopens the conversation and drops the documents
+
+The alternative — keep the documents and patch them — would let a document
+outlive the conversation it was derived from. Regenerating is cheap; a document
+nobody approved in its current form is not.
+
+### D6. Submit writes the envelope, then checks it
+
+The order is: write `submitted/TICKET-*.json`, move the phase to `submitted`,
+then run the stand-in for 1b's seal check. A refusal freezes the ticket where it
+is and prints the email that would be sent, resume URL included. The envelope is
+written either way, because a frozen ticket keeps its box (D1). Checking before
+writing would have made a failed seal look like a failed submit, and the design
+says submit is one-way.
+
+Email delivery is not wired. The freeze path is: the email is printed in full to
+the server log. Wiring a transport later must not change any of the above.
+
+### D7. Attribution at the end, resume link from the first turn
+
+The conversation is anonymous while it runs; name and email are taken on the
+submit screen, because that is the moment they are needed and the moment they
+cost nothing. The session id goes into the URL on the first turn regardless, so
+the resume link exists before anyone knows where to send it. Ids are 24
+characters of `randomBytes`, since an anonymous session is protected by nothing
+else.
+
+### D8. Sessions are JSON files, one per conversation
+
+`node:sqlite` is available and unused. A file per session is inspectable by hand
+while the elicitation is being tuned, which is worth more right now than any
+query. The trigger to move is the deferred duplicate check, which is the first
+thing needing a query across sessions.
 
 ---
 

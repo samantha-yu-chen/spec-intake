@@ -17,8 +17,29 @@ L2   agent-ticket-system   sealed spec -> contract, queue, ledger
 L3   lite-harness          contract -> branch + evidence per criterion
 ```
 
-Nothing is built here yet. `docs/BUILD-PLAN.md` is the Layer 1a build plan;
-`docs/L1A-DESIGN-GAPS.md` is the design review and the decision record.
+`CLAUDE.md` holds the invariants this repository is built to, and
+`docs/DESIGN-DECISIONS.md` is the live record of what is settled, what is
+deferred and what Layer 1b still owes. `docs/BUILD-PLAN.md` is the superseded
+origin plan, kept for its reasoning.
+
+## Running it
+
+Node 24 or later. The intake talks to `claude-opus-5`, so it needs a key:
+
+```sh
+export ANTHROPIC_API_KEY=…      # refused at start-up if missing
+npm install
+npm run dev                      # API on :4317, UI on :4316
+```
+
+Open `http://localhost:4316`. The session id lands in the URL on the first turn
+— that URL is the resume link, and reloading it brings the whole conversation
+back. `npm run check` runs the typecheck and the tests; `npm run build` then
+`npm run serve` runs the built UI from the API server on one port.
+
+Sessions are one JSON file each under `sessions/`, submitted envelopes under
+`submitted/`. Both are gitignored: they are runtime state and carry whatever a
+requester typed.
 
 ## What comes out
 
