@@ -118,3 +118,12 @@ implementation detail — record it in `docs/DESIGN-DECISIONS.md`.
   file, an unresolvable reference: stop, never assume it was probably fine.
 - **When a test that guards a boundary fails, fix the code, not the threshold.**
 - **No new runtime dependency without asking.** It is a supply-chain decision.
+
+## Recorded deviations
+
+- **React + Vite, asked for and granted.** A build step and four dependencies
+  (`react`, `react-dom`, `@vitejs/plugin-react`, `vite`) were added deliberately.
+  The reveal (§ 5) is the entire gate and has to be a real interface — ordered
+  lists a requester can reject at, not a transcript dump — so a hand-rolled
+  no-build page would have made the gate harder to build than the thing it
+  guards. The server side stays dependency-thin: `node:http`, no framework.

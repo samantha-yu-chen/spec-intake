@@ -10,3 +10,8 @@ dist/
 .env.*
 *.log
 .DS_Store
+
+# Runtime state. A session is a live conversation; a submission is a handed-off
+# ticket. Neither is source, and both may carry what a requester typed.
+sessions/
+submitted/
