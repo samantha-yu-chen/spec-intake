@@ -25,6 +25,25 @@ export function checkSpecPair(pair: SpecPair): DriftFinding[] {
   return [...checkTrace(pair.human, pair.tech), ...checkOrder(pair.tech)];
 }
 
+export interface TraceRow {
+  statement: string;
+  kind: HumanSpec['statements'][number]['kind'];
+  text: string;
+  implemented_by: string[];
+}
+
+// WHY: the trace map travels with the sealed contract. It is what lets an
+// auditor tell an authorised requirement from an item the agent added, without
+// reading the conversation.
+export function traceMap(pair: SpecPair): TraceRow[] {
+  return pair.human.statements.map((statement) => ({
+    statement: statement.id,
+    kind: statement.kind,
+    text: statement.text,
+    implemented_by: pair.tech.items.filter((item) => item.derived_from.includes(statement.id)).map((item) => item.id),
+  }));
+}
+
 export function checkTrace(human: HumanSpec, tech: TechSpec): DriftFinding[] {
   const empty = refuseEmpty(human, tech);
   if (empty.length > 0) return empty;

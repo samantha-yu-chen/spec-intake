@@ -5,6 +5,7 @@ import type { SessionEvent } from './events.ts';
 import { MAX_TOKENS, MODEL } from './model.ts';
 import type { Session } from './session.ts';
 import { specPair, type SpecPair } from './spec.ts';
+import { renderTranscript } from './transcript.ts';
 
 export class DocumentsRefused extends Error {
   findings: DriftFinding[];
@@ -74,7 +75,7 @@ function prompt(session: Session, findings: DriftFinding[]): string {
     'Here is the intake conversation, then the record of what was captured during it.',
     '',
     '## Conversation',
-    transcript(session.messages),
+    renderTranscript(session.messages),
     '',
     '## Record',
     record(session.events),
@@ -89,23 +90,6 @@ function repair(findings: DriftFinding[]): string {
     '## Your previous attempt did not hold together. Fix these and regenerate both documents.',
     ...findings.map((finding) => `- ${finding.code}: ${finding.detail}`),
   ].join('\n');
-}
-
-function transcript(messages: readonly Anthropic.MessageParam[]): string {
-  return messages
-    .map((message) => ({ role: message.role, text: textOf(message.content) }))
-    .filter((turn) => turn.text.length > 0)
-    .map((turn) => `**${turn.role === 'user' ? 'Requester' : 'Intake'}:** ${turn.text}`)
-    .join('\n\n');
-}
-
-function textOf(content: Anthropic.MessageParam['content']): string {
-  if (typeof content === 'string') return content;
-  return content
-    .filter((block): block is Anthropic.TextBlockParam => block.type === 'text')
-    .map((block) => block.text)
-    .join('\n')
-    .trim();
 }
 
 function record(events: readonly SessionEvent[]): string {
