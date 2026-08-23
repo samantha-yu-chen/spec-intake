@@ -1,6 +1,16 @@
-# spec-intake — Layer 1a
+# spec-intake — intent-authoring experiment
 
-The only place a human touches this system.
+> **Current direction:** this is a working TypeScript experiment, not the target
+> operating-model implementation. Its retained boundary is model-backed
+> Discovery/Intent authoring: reveal, provenance, fatigue, break analysis and
+> human-to-technical trace. It is **not** the only place a human participates in
+> the current hybrid model. Read [`CURRENT-DIRECTION.md`](CURRENT-DIRECTION.md)
+> before extending it.
+
+The original experiment treated this as the only place a human touched the
+system. That assumption is now retired; the current model also reserves human
+decision rights for consequence, boundary, envelope, external, release,
+activation and exception decisions.
 
 A requester arrives with an intention. This repository grills them until that
 intention is a **standardised specification** an unsupervised pipeline can carry

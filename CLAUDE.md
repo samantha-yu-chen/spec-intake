@@ -1,5 +1,10 @@
 # Working on spec-intake
 
+> **Current direction overrides the original Layer 1a programme below.** Read
+> `AGENTS.md` and `CURRENT-DIRECTION.md` first. The existing implementation and
+> tests remain valid evidence for the intent-authoring mechanisms they exercise,
+> but the claim that this is the only human touchpoint is retired.
+
 This file governs work **on** this repository. It is not the instruction set the
 intake agent runs — that is a separate, versioned artifact and is budgeted and
 tested on its own.
@@ -11,17 +16,15 @@ disagree, this file wins.
 
 ## What this is, and what we agreed
 
-Layer 1a. The **only** place a human touches the system. A requester arrives with
-an intention; this repository grills them until that intention is a standardised
-specification an unsupervised pipeline can carry to done without asking anyone
-anything.
+Legacy Layer 1a, now retained as an intent-authoring experiment. A requester
+arrives with an intention; this repository tests ways to produce a reviewable,
+traceable specification draft. Downstream execution may still require named
+human decisions under the current consequence classifier.
 
-That last clause is the whole design. Everything downstream — 1b, the ticket
-system, the harness — runs with no human in it. So **every human judgement the
-pipeline will ever need has to be extracted here, at the one moment a human is
-present.** A gap in this repository is not a missing field; it is a question the
-pipeline will later need answered that nobody asked while the human was still in
-the room.
+The original no-human-downstream assumption no longer governs future work.
+Intake should capture intent and foreseeable forks, but it must not manufacture
+future consequence, release, activation, or exception decisions before their
+evidence exists.
 
 See `README.md` for the outputs and the declared prototype trade-offs, and
 `docs/DESIGN-DECISIONS.md` for what is settled, what is deferred, and what is
