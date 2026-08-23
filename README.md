@@ -4,20 +4,29 @@
 > operating-model implementation. Its retained boundary is model-backed
 > Discovery/Intent authoring: reveal, provenance, fatigue, break analysis and
 > human-to-technical trace. It is **not** the only place a human participates in
-> the current hybrid model. Read [`CURRENT-DIRECTION.md`](CURRENT-DIRECTION.md)
+> v0.10, and it owns no downstream decision authority. The complete v0.10
+> Markdown is authoritative; Diagram 1 v0.8 and Diagrams 2 and 3 v0.10 are
+> companion views only. Read [`CURRENT-DIRECTION.md`](CURRENT-DIRECTION.md)
 > before extending it.
 
 The original experiment treated this as the only place a human touched the
-system. That assumption is now retired; the current model also reserves human
-decision rights for consequence, boundary, envelope, external, release,
-activation and exception decisions.
+system. That assumption is now retired. In v0.10, an accountable owner is
+resolved per decision from the case pack, decision type, consequence class,
+authority version, affected parties, and independence requirement. Human owners
+retain value judgement and acceptance of consequences; this intake cannot
+pre-authorise a later Discovery, Investment, Delivery, activation-boundary, or
+Outcome decision.
 
-A requester arrives with an intention. This repository grills them until that
-intention is a **standardised specification** an unsupervised pipeline can carry
-to done without asking anyone anything. Everything downstream runs without a
-human in it.
+The original experiment attempted to turn a requester's intention into a
+standardised specification that an unsupervised pipeline could carry to its
+legacy `done` state. That topology is retained below as historical experiment
+context only. It does not describe v0.10, where qualified Human decisions remain
+at consequence-bearing boundaries and `done` is not `MERGED`, released,
+activated, or successful.
 
-```
+```text
+HISTORICAL EXPERIMENT TOPOLOGY — NOT THE TARGET OPERATING MODEL
+
 L1a  spec-intake       human intent  ->  Standard Spec        <- this repo
         │  (one document crosses this boundary, nothing else)
 L1b  spec-kernel       Standard Spec ->  sealed contract
@@ -55,10 +64,13 @@ requester typed.
 
 Two documents, produced in the same conversation and submitted together:
 
-| Output | Level | Who is accountable |
+| Output | Level | Experiment role |
 |---|---|---|
-| **human-spec** | High-level architecture and design, the intake, what the requester is trying to do, with the full happy path | The requester **authorises** it |
-| **tech-spec** | Low-level design in full detail, decomposed so each harness agent can pick up one ticket, execute, and take the next | The agent **owns** it; every item must trace to a human-spec statement |
+| **human-spec** | High-level architecture and design, the intake, what the requester is trying to do, with the full happy path | The requester confirms the authored intent package |
+| **tech-spec** | Low-level design in full detail, decomposed so each harness agent can pick up one ticket, execute, and take the next | The Agent drafts it; every item must trace to a human-spec statement |
+
+These outputs are candidate authoring artefacts. Neither is an Outcome Case,
+sealed Delivery spec, authority resolution, or downstream decision.
 
 The requester ratifies the human-spec and sanity-checks the tech-spec. A
 non-technical requester cannot audit a low-level design, so the review surface is
@@ -73,8 +85,8 @@ before execution starts.
 
 ## The one return path
 
-Submit is one-way. There is no supervision downstream, so the pipeline cannot
-ask a question — with one exception:
+In the original prototype, submit was one-way and the unsupervised downstream
+pipeline could not ask a question, with one exception:
 
 > When the request fails because the specification is **incomplete or
 > self-contradictory**, an email goes back to the requester. It carries a URL
@@ -150,9 +162,11 @@ the finished spec, not the token bill.
 
 ### Retention ends at completion
 
-The intake box — human-spec, tech-spec, ticket id and conversation — exists from
-submit until the task completes. On completion it is dropped; the **sealed
-contract** is the audit record from then on.
+In the prototype, the intake box — human-spec, tech-spec, ticket id and
+conversation — exists from submit until the legacy task completes. On
+completion it is dropped; the experiment treated the **sealed contract** as the
+audit record from then on. This is historical behaviour, not a claim that this
+repository owns the v0.10 evidence chain or Outcome Case.
 
 Two consequences that follow from this and need to hold:
 

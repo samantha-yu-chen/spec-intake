@@ -6,19 +6,30 @@ This repository is an executable TypeScript experiment for model-backed
 Discovery/Intent authoring. It is not the target implementation and is not the
 only human touchpoint in the current operating model.
 
-The cross-repository authority is
-`../prod-eng-govrn-op-model/docs/current-repository-direction.md`. The hybrid
-SSOT uses the v0.8 narrative and Delivery diagram with v0.10 Diagrams 2 and 3.
+The complete and final operating-model SSOT is
+`../prod-eng-govrn-op-model/docs/v0/greenfield-ai-first-operating-model-v0.10.md`.
+Diagram 1 v0.8 is its unchanged Delivery companion view; Diagrams 2 and 3 v0.10
+are companion views. Per v0.10 §9.17, diagrams and this implementation do not
+define authority. Read
+`../prod-eng-govrn-op-model/docs/current-repository-direction.md` for this
+experiment's disposition, and do not reconstruct the former hybrid v0.8/v0.10
+precedence.
 
 ## Preserve
 
-- stated versus inferred/drafted provenance;
-- reveal-first approval that makes rejection easy;
-- fork, assumption, declined-answer and break records;
-- fatigue detection and pause/resume;
-- human-spec to technical-spec trace checks;
-- structured generation and fail-closed parsing;
-- session resumption and one-way submission behaviour as experiment evidence.
+- stated versus drafted-confirmed provenance;
+- reveal contents that make correction and rejection easy;
+- invented-scope and dropped-requirement detection;
+- dependency ordering;
+- fatigue signals;
+- freeze/resume behaviour;
+- malformed structured-model output and fail-closed parsing;
+- declined-answer and break records;
+- structured generation;
+- session resume and one-way submission behaviour as experiment evidence.
+
+Retain this complete P3 evidence list until P4 classifies each fixture as
+required in Python, historical only, or superseded with a reason.
 
 ## Do not extend
 
@@ -33,8 +44,10 @@ SSOT uses the v0.8 narrative and Delivery diagram with v0.10 Diagrams 2 and 3.
 
 Safety and correctness fixes, documentation, contract extraction,
 language-neutral fixtures, and changes that isolate the retained authoring
-boundary are allowed. Major new features require an explicit mapping to the
-hybrid SSOT and must not deepen the retired Layer 1a assumptions.
+boundary are allowed. P3 only extracts the legacy evidence listed above. It
+does not derive or implement v0.10 invariants; P5 does that independently in
+the operating-model repository. Do not deepen the retired Layer 1a assumptions
+or add downstream decision authority.
 
 Do not translate files one by one to Python here. Preserve fixtures and contracts
 for a later Python implementation in a manually created repository.

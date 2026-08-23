@@ -9,6 +9,12 @@ This file governs work **on** this repository. It is not the instruction set the
 intake agent runs — that is a separate, versioned artifact and is budgeted and
 tested on its own.
 
+The complete and final operating-model SSOT is
+`../prod-eng-govrn-op-model/docs/v0/greenfield-ai-first-operating-model-v0.10.md`.
+Its Diagram 1 v0.8 and Diagrams 2 and 3 v0.10 are companion views, not competing
+authority. This repository is executable design research and must not claim to
+be the target control plane or Outcome Case SSOT.
+
 **A `CLAUDE.md` in a parent directory does not apply here.** Any playbook above
 this one describes a different harness — pipeline phases, an agent roster,
 `/harness:*` skills — none of which exist in this repository. Where the two
@@ -26,6 +32,14 @@ Intake should capture intent and foreseeable forks, but it must not manufacture
 future consequence, release, activation, or exception decisions before their
 evidence exists.
 
+P3 work here is limited to extracting the complete legacy evidence list in
+`CURRENT-DIRECTION.md`, including authoring, reveal, provenance, drift,
+ordering, fatigue, freeze/resume, declined-answer and break records, structured
+generation, malformed-output refusal, session resume, and one-way submission.
+P4 classifies that evidence; P5 derives v0.10 conformance independently in the
+operating-model repository. Neither a generated human-spec nor tech-spec grants
+downstream authority.
+
 See `README.md` for the outputs and the declared prototype trade-offs, and
 `docs/DESIGN-DECISIONS.md` for what is settled, what is deferred, and what is
 still owed by Layer 1b.
@@ -37,9 +51,11 @@ implementation detail — record it in `docs/DESIGN-DECISIONS.md`.
 
 ### The output
 
-1. **Two documents, one conversation.** The requester *authorises* the human-spec.
-   The agent *owns* the tech-spec, and both are produced before submit so the
-   requester can choose whether to read the technical one.
+1. **Two documents, one conversation.** In the experiment, the requester
+   confirms the human-spec and the Agent drafts the tech-spec. Both are produced
+   before submit so the requester can choose whether to read the technical one.
+   This authors a candidate intent package; it grants no downstream decision
+   authority.
 2. **No drift, checked both ways.** A tech-spec item tracing to no human-spec
    statement is the agent inventing scope. A human-spec requirement with no
    tech-spec item implementing it is a requirement silently dropped. The second
