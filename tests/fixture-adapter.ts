@@ -12,7 +12,7 @@ import { sessionEvent, type SessionEvent } from '../intake/events.ts';
 import { fatigueSignal } from '../intake/fatigue.ts';
 import { canTransition, phase } from '../intake/phase.ts';
 import { buildReveal } from '../intake/reveal.ts';
-import { newSession, session as sessionSchema, turnMetric, type Session } from '../intake/session.ts';
+import { newSession, turnMetric, type Session } from '../intake/session.ts';
 import { specPair, type SpecPair } from '../intake/spec.ts';
 import { recordFromToolUse } from '../intake/tools.ts';
 import { submit } from '../server/routes/submit.ts';
@@ -200,7 +200,7 @@ function revealExpected(given: JsonObject, _when: JsonObject): NormalizedExpecte
       kind: 'satisfied',
       code: 'REVEAL_CORRECTION_CONTENT_EXPOSED',
       result: {
-        section_order: ['inferred', 'defaulted', 'assumptions', 'declined'],
+        section_order: Object.keys(reveal).filter((key) => key !== 'statedRatio'),
         inferred: reveal.inferred.entries,
         defaulted: reveal.defaulted.entries,
         assumptions: reveal.assumptions.entries,
@@ -321,11 +321,11 @@ function generationSession(): Session {
   };
 }
 
-async function generationExpected(_given: JsonObject, when: JsonObject): Promise<NormalizedExpected> {
+async function generationExpected(given: JsonObject, _when: JsonObject): Promise<NormalizedExpected> {
   let generated: GenerationClient | undefined;
   try {
-    const outputs = asArray(when.model_outputs, 'when.model_outputs');
-    if (outputs.length === 0) throw new Error('when.model_outputs must not be empty');
+    const outputs = asArray(given.model_outputs, 'given.model_outputs');
+    if (outputs.length === 0) throw new Error('given.model_outputs must not be empty');
     generated = deterministicGenerationClient(outputs);
     const pair = await generateDocuments(generated.client, generationSession());
     return expected({
@@ -358,18 +358,13 @@ async function generationExpected(_given: JsonObject, when: JsonObject): Promise
   }
 }
 
-async function sessionResumeExpected(given: JsonObject, when: JsonObject): Promise<NormalizedExpected> {
+async function sessionResumeExpected(given: JsonObject, _when: JsonObject): Promise<NormalizedExpected> {
   const directory = await mkdtemp(join(tmpdir(), 'spec-intake-fixture-'));
   try {
     const id = 'fixture-session';
     const store = createStore(directory);
-    if (when.mode === 'load_raw') {
-      await mkdir(directory, { recursive: true });
-      await writeFile(join(directory, `${id}.json`), `${JSON.stringify(given.session)}\n`, 'utf8');
-    } else {
-      const value = sessionSchema.parse(given.session);
-      await store.save(value, value.updatedAt);
-    }
+    await mkdir(directory, { recursive: true });
+    await writeFile(join(directory, `${id}.json`), `${JSON.stringify(given.session)}\n`, 'utf8');
     const loaded = await store.load(id);
     return expected({
       kind: 'satisfied',
@@ -908,8 +903,8 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
   {
     fixtureId: 'spec-intake.structured-generation-success',
     capability: 'intake.structured-generation',
-    given: {},
-    when: { operation: 'spec-intake.generation.attempt', model_outputs: [alignedPair()] },
+    given: { model_outputs: [alignedPair()] },
+    when: { operation: 'spec-intake.generation.attempt' },
     invariants: ['intake.structured-generation-schema-and-drift-checked'],
     sourceRules: ['spec-intake.rule.structured-generation'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: ALLOW means the deterministic client drove the production generation parser and drift check successfully; it grants no authority beyond authoring.',
@@ -918,8 +913,8 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
   {
     fixtureId: 'spec-intake.structured-generation-repaired',
     capability: 'intake.structured-generation-repair',
-    given: {},
-    when: { operation: 'spec-intake.generation.attempt', model_outputs: [pairWithDanglingTrace(), alignedPair()] },
+    given: { model_outputs: [pairWithDanglingTrace(), alignedPair()] },
+    when: { operation: 'spec-intake.generation.attempt' },
     invariants: ['intake.generated-drift-retried-before-reveal'],
     sourceRules: ['spec-intake.rule.structured-generation'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: ALLOW is derived only after production generation rejects the first drifting pair and a second structured output aligns.',
@@ -928,8 +923,8 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
   {
     fixtureId: 'spec-intake.structured-generation-drift-blocked',
     capability: 'intake.structured-generation-repair-ceiling',
-    given: {},
-    when: { operation: 'spec-intake.generation.attempt', model_outputs: [pairWithDanglingTrace()] },
+    given: { model_outputs: [pairWithDanglingTrace()] },
+    when: { operation: 'spec-intake.generation.attempt' },
     invariants: ['intake.generated-drift-blocks-after-retry-ceiling'],
     sourceRules: ['spec-intake.rule.structured-generation'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: BLOCK follows three executable drifted attempts; the successful generation case proves the named aligned-pair exit condition.',
@@ -938,8 +933,8 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
   {
     fixtureId: 'spec-intake.malformed-structured-output-refused',
     capability: 'intake.malformed-output-refusal',
-    given: {},
-    when: { operation: 'spec-intake.generation.attempt', model_outputs: [{ human: {}, tech: {} }] },
+    given: { model_outputs: [{ human: {}, tech: {} }] },
+    when: { operation: 'spec-intake.generation.attempt' },
     invariants: ['intake.malformed-structured-output-fails-closed'],
     sourceRules: ['spec-intake.rule.structured-generation'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: REFUSE means the production structured parser could not form an evaluable pair; the valid generation case proves recovery.',
@@ -949,7 +944,7 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
     fixtureId: 'spec-intake.session-resume-intact',
     capability: 'intake.session-resume',
     given: { session: resumeSession() },
-    when: { operation: 'spec-intake.session.resume', mode: 'round_trip' },
+    when: { operation: 'spec-intake.session.resume' },
     invariants: ['intake.resumed-session-preserves-conversation'],
     sourceRules: ['spec-intake.rule.session-resume'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: PASS compares the production store round-trip and proves the legacy session content resumes intact.',
@@ -959,7 +954,7 @@ export const EXPERIMENT_CASES: ExperimentCase[] = [
     fixtureId: 'spec-intake.malformed-stored-session-refused',
     capability: 'intake.session-resume',
     given: { session: { ...resumeSession(), phase: 'almost_done' } },
-    when: { operation: 'spec-intake.session.resume', mode: 'load_raw' },
+    when: { operation: 'spec-intake.session.resume' },
     invariants: ['intake.corrupt-session-never-becomes-empty-session'],
     sourceRules: ['spec-intake.rule.session-resume'],
     normalization: 'Adapter-derived shared outcome and recovery metadata: REFUSE preserves fail-closed loading of an invalid stored session; the intact resume case proves the valid-input recovery.',

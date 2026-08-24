@@ -8,11 +8,13 @@ function git(args: string[]): string {
   return execFileSync('git', args, { cwd: new URL('..', import.meta.url), encoding: 'utf8' }).trim();
 }
 
-const sourceRevision = git(['rev-parse', 'HEAD']);
 const trackedFixtures = git(['ls-tree', '-r', '--name-only', 'HEAD', 'fixtures/experiment']);
-if (trackedFixtures !== '') {
-  throw new Error('run fixture export at an A-equivalent executable commit before fixtures are tracked');
+const repin = process.argv.slice(2).includes('--repin');
+if (trackedFixtures !== '' && !repin) {
+  throw new Error('tracked fixtures require an explicit --repin after a new A-equivalent commit');
 }
+const sourceRevision = git(['log', '-1', '--format=%H', '--', 'tests/fixture-adapter.ts']);
+git(['merge-base', '--is-ancestor', sourceRevision, 'HEAD']);
 
 const directory = new URL('../fixtures/experiment', import.meta.url);
 await mkdir(directory, { recursive: true });
