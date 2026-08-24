@@ -1,0 +1,66 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.fatigue-signal-clear",
+  "source_repository": "spec-intake",
+  "capability": "intake.fatigue-signal",
+  "status": "legacy_behaviour",
+  "given": {
+    "turns": [
+      {
+        "at": "2026-08-18T09:00:00.000Z",
+        "phase": "gathering",
+        "requesterChars": 70,
+        "agentChars": 100,
+        "eventsRecorded": 1
+      },
+      {
+        "at": "2026-08-18T09:00:00.000Z",
+        "phase": "gathering",
+        "requesterChars": 20,
+        "agentChars": 100,
+        "eventsRecorded": 1
+      },
+      {
+        "at": "2026-08-18T09:00:00.000Z",
+        "phase": "gathering",
+        "requesterChars": 65,
+        "agentChars": 100,
+        "eventsRecorded": 1
+      }
+    ]
+  },
+  "when": {
+    "operation": "spec-intake.fatigue.inspect"
+  },
+  "expected": {
+    "outcome": "RECORD_ONLY",
+    "code": "FATIGUE_SIGNAL_CLEAR",
+    "result": {
+      "fired": false
+    },
+    "owner": "none",
+    "exit_condition": "none",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.fatigue-rule-not-always-on"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "13e7303ba0a097163c049c0a260c12f4953164cd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.fatigue-signal"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: RECORD_ONLY records that the legacy fatigue rule stayed quiet; it is an observation and not a governance decision."
+  }
+}

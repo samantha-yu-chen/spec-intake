@@ -1,0 +1,255 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.structured-generation-repaired",
+  "source_repository": "spec-intake",
+  "capability": "intake.structured-generation-repair",
+  "status": "legacy_behaviour",
+  "given": {
+    "model_outputs": [
+      {
+        "human": {
+          "title": "Overdue record view",
+          "problem": "Operators rebuild a list by hand.",
+          "outcome": "One read-only view shows overdue records.",
+          "statements": [
+            {
+              "id": "H1",
+              "kind": "requirement",
+              "text": "Show overdue records.",
+              "source": "stated"
+            },
+            {
+              "id": "H2",
+              "kind": "requirement",
+              "text": "Sort oldest first.",
+              "source": "drafted_confirmed"
+            },
+            {
+              "id": "H3",
+              "kind": "constraint",
+              "text": "Write nothing.",
+              "source": "stated"
+            }
+          ],
+          "happy_path": [
+            "Open the view",
+            "Read overdue records"
+          ],
+          "out_of_scope": [
+            "Sending messages"
+          ],
+          "what_would_make_this_fail": [
+            "The due-date boundary is ambiguous"
+          ],
+          "half_value": "The unsorted list still has value.",
+          "blast_radius_ceiling": "Read-only access to synthetic records."
+        },
+        "tech": {
+          "approach": "One read-only query and view.",
+          "items": [
+            {
+              "id": "T1",
+              "title": "Overdue query",
+              "detail": "Select overdue records.",
+              "derived_from": [
+                "H9"
+              ],
+              "depends_on": [],
+              "acceptance": [
+                {
+                  "given": "an overdue record",
+                  "when": "the query runs",
+                  "then": "the record is returned",
+                  "adjudicated_by": "synthetic-check-one"
+                }
+              ]
+            },
+            {
+              "id": "T2",
+              "title": "Oldest-first view",
+              "detail": "Order the query result.",
+              "derived_from": [
+                "H2"
+              ],
+              "depends_on": [
+                "T1"
+              ],
+              "acceptance": [
+                {
+                  "given": "two overdue records",
+                  "when": "the view opens",
+                  "then": "the older record is first",
+                  "adjudicated_by": "synthetic-check-two"
+                }
+              ]
+            }
+          ],
+          "ticket_order": [
+            "T1",
+            "T2"
+          ]
+        }
+      },
+      {
+        "human": {
+          "title": "Overdue record view",
+          "problem": "Operators rebuild a list by hand.",
+          "outcome": "One read-only view shows overdue records.",
+          "statements": [
+            {
+              "id": "H1",
+              "kind": "requirement",
+              "text": "Show overdue records.",
+              "source": "stated"
+            },
+            {
+              "id": "H2",
+              "kind": "requirement",
+              "text": "Sort oldest first.",
+              "source": "drafted_confirmed"
+            },
+            {
+              "id": "H3",
+              "kind": "constraint",
+              "text": "Write nothing.",
+              "source": "stated"
+            }
+          ],
+          "happy_path": [
+            "Open the view",
+            "Read overdue records"
+          ],
+          "out_of_scope": [
+            "Sending messages"
+          ],
+          "what_would_make_this_fail": [
+            "The due-date boundary is ambiguous"
+          ],
+          "half_value": "The unsorted list still has value.",
+          "blast_radius_ceiling": "Read-only access to synthetic records."
+        },
+        "tech": {
+          "approach": "One read-only query and view.",
+          "items": [
+            {
+              "id": "T1",
+              "title": "Overdue query",
+              "detail": "Select overdue records.",
+              "derived_from": [
+                "H1"
+              ],
+              "depends_on": [],
+              "acceptance": [
+                {
+                  "given": "an overdue record",
+                  "when": "the query runs",
+                  "then": "the record is returned",
+                  "adjudicated_by": "synthetic-check-one"
+                }
+              ]
+            },
+            {
+              "id": "T2",
+              "title": "Oldest-first view",
+              "detail": "Order the query result.",
+              "derived_from": [
+                "H2"
+              ],
+              "depends_on": [
+                "T1"
+              ],
+              "acceptance": [
+                {
+                  "given": "two overdue records",
+                  "when": "the view opens",
+                  "then": "the older record is first",
+                  "adjudicated_by": "synthetic-check-two"
+                }
+              ]
+            }
+          ],
+          "ticket_order": [
+            "T1",
+            "T2"
+          ]
+        }
+      }
+    ]
+  },
+  "when": {
+    "operation": "spec-intake.generation.attempt"
+  },
+  "expected": {
+    "outcome": "ALLOW",
+    "code": "STRUCTURED_DOCUMENTS_REPAIRED",
+    "result": {
+      "attempts": 2,
+      "statement_sources": [
+        {
+          "id": "H1",
+          "source": "stated"
+        },
+        {
+          "id": "H2",
+          "source": "drafted_confirmed"
+        },
+        {
+          "id": "H3",
+          "source": "stated"
+        }
+      ],
+      "trace": [
+        {
+          "statement": "H1",
+          "kind": "requirement",
+          "text": "Show overdue records.",
+          "implemented_by": [
+            "T1"
+          ]
+        },
+        {
+          "statement": "H2",
+          "kind": "requirement",
+          "text": "Sort oldest first.",
+          "implemented_by": [
+            "T2"
+          ]
+        },
+        {
+          "statement": "H3",
+          "kind": "constraint",
+          "text": "Write nothing.",
+          "implemented_by": []
+        }
+      ],
+      "ticket_order": [
+        "T1",
+        "T2"
+      ]
+    },
+    "owner": "none",
+    "exit_condition": "none",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.generated-drift-retried-before-reveal"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "13e7303ba0a097163c049c0a260c12f4953164cd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.structured-generation"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: ALLOW is derived only after production generation rejects the first drifting pair and a second structured output aligns."
+  }
+}

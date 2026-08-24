@@ -1,0 +1,50 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.malformed-answer-record-refused",
+  "source_repository": "spec-intake",
+  "capability": "intake.answer-provenance",
+  "status": "legacy_behaviour",
+  "given": {},
+  "when": {
+    "operation": "spec-intake.record.answer",
+    "at": "2026-08-18T09:00:00.000Z",
+    "turn": 3,
+    "input": {
+      "slot": "date_boundary",
+      "value": "UTC midnight",
+      "source": "invented",
+      "quote": ""
+    }
+  },
+  "expected": {
+    "outcome": "REFUSE",
+    "code": "ANSWER_RECORD_REFUSED",
+    "result": {
+      "refusal": "spec-intake.answer-record-invalid"
+    },
+    "owner": "spec-intake.fixture-author",
+    "exit_condition": "spec-intake.valid-answer-record-provided",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.malformed-record-fails-closed"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "13e7303ba0a097163c049c0a260c12f4953164cd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.answer-provenance"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: REFUSE means the legacy schema cannot evaluate an unknown provenance or empty requester quote; valid input is the named recovery."
+  }
+}

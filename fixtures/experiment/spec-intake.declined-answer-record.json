@@ -1,0 +1,51 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.declined-answer-record",
+  "source_repository": "spec-intake",
+  "capability": "intake.declined-answer-record",
+  "status": "legacy_behaviour",
+  "given": {},
+  "when": {
+    "operation": "spec-intake.record.declined",
+    "at": "2026-08-18T09:00:00.000Z",
+    "turn": 4,
+    "input": {
+      "question": "How are disputed records shown?",
+      "why": "The requester deferred this answer."
+    }
+  },
+  "expected": {
+    "outcome": "ALLOW",
+    "code": "DECLINED_ANSWER_RECORDED",
+    "result": {
+      "kind": "declined",
+      "turn": 4,
+      "question": "How are disputed records shown?",
+      "why": "The requester deferred this answer."
+    },
+    "owner": "none",
+    "exit_condition": "none",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.declined-answer-remains-visible"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "13e7303ba0a097163c049c0a260c12f4953164cd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.declined-answer-record"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: ALLOW means the declined-answer record was accepted as authoring evidence, not that the unanswered question was decided."
+  }
+}

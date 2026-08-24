@@ -51,9 +51,14 @@ required for retained behaviours, not for TypeScript file layout.
 
 ## Next safe coding task
 
-Add a language-neutral fixture export covering the complete migration-asset
-list above. Keep the current schemas unchanged in that P3 slice; the purpose is
-to preserve legacy evidence for P4 classification before a future Python
-contract is designed. Do not derive v0.10 invariants or encode downstream
-decision authority here; P5 derives conformance from the complete v0.10 SSOT in
-the operating-model repository.
+P3.3 extraction is complete on `migration/p33-spec-intake-fixtures-v3`. It
+exports 21 executable legacy fixtures covering the complete migration-asset
+list above under fixture contract v3.0. The export preserves the actual frozen
+session boundary: a resume notice is emitted, but the current phase table has no
+normal authoring re-entry from `frozen`. See
+`docs/EXPERIMENT-FIXTURE-EXPORT.md`.
+
+The next safe task is independent review and P4 catalogue adjudication. Keep the
+current schemas unchanged until that classification is complete. Do not derive
+v0.10 invariants or encode downstream decision authority here; P5 derives
+conformance from the complete v0.10 SSOT in the operating-model repository.
