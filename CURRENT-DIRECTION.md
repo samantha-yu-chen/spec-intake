@@ -144,7 +144,32 @@ session boundary: a resume notice is emitted, but the current phase table has no
 normal authoring re-entry from `frozen`. See
 `docs/EXPERIMENT-FIXTURE-EXPORT.md`.
 
-The next safe task is independent review and P4 catalogue adjudication. Keep the
-current schemas unchanged until that classification is complete. Do not derive
-v0.10 invariants or encode downstream decision authority here; P5 derives
-conformance from the complete v0.10 SSOT in the operating-model repository.
+**Superseded by P4.** The previous next task was independent review and P4
+catalogue adjudication. That review is complete and accepted — see "P4 outcome
+(accepted)" above. Retained for history:
+
+> The next safe task is independent review and P4 catalogue adjudication. Keep
+> the current schemas unchanged until that classification is complete. Do not
+> derive v0.10 invariants or encode downstream decision authority here; P5
+> derives conformance from the complete v0.10 SSOT in the operating-model
+> repository.
+
+The next safe task is to hold the current schemas and the legacy TypeScript
+implementation stable while P5 derives the v0.10 conformance invariants in the
+operating-model repository.
+
+Local work is limited to safety and correctness fixes that do not change
+exported fixture behaviour. `npm run check` stays green, and all 21 exported
+fixtures keep verifying against their pinned executable Commit A.
+
+Still forbidden here:
+
+- deriving v0.10 invariants in this repository;
+- encoding downstream decision authority here;
+- inventing a `frozen` recovery path;
+- assigning a future repository or runtime owner;
+- deleting legacy code;
+- creating any missing Python repository.
+
+P6, not this repository, may later recommend the first Python repository
+boundary, after the P5 conformance cases pass.
