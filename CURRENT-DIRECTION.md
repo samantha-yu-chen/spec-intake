@@ -44,10 +44,69 @@ Before replacement, retain JSON fixtures for:
 - session resume and one-way submission behaviour.
 
 P4, not P3, classifies each fixture as required in Python, historical only, or
-superseded with a reason.
+superseded with a reason. **Superseded by outcome:** that classification is now
+complete and accepted — see "P4 outcome (accepted)" below.
 
 The later Python implementation may use different schemas and UX. Parity is
 required for retained behaviours, not for TypeScript file layout.
+
+## P4 outcome (accepted)
+
+The root operating-model repository has catalogued and adjudicated this
+repository's export. The accepted snapshot is this repository's `main` at
+`524a3d3` (`merge: export spec-intake legacy fixtures v3`); each catalogued
+fixture pins its executable Commit A `13e7303`, not that merge commit. The
+adjudication of record is `docs/p4-fixture-catalogue-adjudication.md` in
+`prod-eng-govrn-op-model`, with the machine record in
+`catalogue/experiment-fixture-catalogue.json` there. No merge SHA is quoted for
+the P4 record itself; cite the document.
+
+All 21 exported fixtures were classified, with no gap evidence outstanding.
+
+| Disposition | Count | Meaning |
+|---|---:|---|
+| `required_in_python` | 18 | An approved target boundary that consumes this capability must reproduce the implementation-neutral observation, in addition to the applicable v0.10 rules. |
+| `superseded_with_reason` | 1 | The exact expected behaviour conflicts with v0.10, or would restore a concept v0.10 replaced. |
+| `historical_only` | 2 | Reproducible design research retained for comparison, not a target parity or gate requirement. |
+
+Neither `superseded_with_reason` nor `historical_only` means the fixture was
+wrong, and neither authorises deleting it. All 21 fixtures stay in this
+repository and keep executing under `npm run check`.
+
+- `spec-intake.drifting-submission-frozen` — `superseded_with_reason`. The
+  freeze record and retained envelope remain useful evidence, but the observed
+  frozen topology has no executable normal correction or re-entry, so it cannot
+  become a target recovery contract: v0.10 requires every blocked recovery state
+  to name a real owner and exit condition.
+- `spec-intake.fatigue-signal-recorded` and `spec-intake.fatigue-signal-clear` —
+  `historical_only`. The record-only fatigue heuristic is retained as
+  instrumentation research, not as a Python gate or an unvalidated threshold.
+
+The other 18 are `required_in_python` for one recorded reason: they retain
+source attribution, reveal fidelity, dependency ordering, scope and requirement
+drift detection, resumability, repair and malformed-input refusal before a
+contract can become authoritative, and they grant no downstream decision
+authority.
+
+P4 also narrowed the other submission fixtures explicitly: they preserve
+immutable hand-off and do not claim seal or decision authority.
+
+### Frozen topology, as adjudicated
+
+This is the most consequential P4 result for this repository, and the easiest
+to state backwards.
+
+- The frozen resume notice **is** executable historical behaviour: a drifting
+  submitted pair writes one retained envelope, freezes and emits the notice.
+- The current `frozen` phase **has no normal authoring re-entry**. That is the
+  actual boundary, and the export preserved it faithfully.
+- P4 **did not invent** the missing recovery path.
+- P5 must **not** manufacture one as a positive Python recovery requirement.
+  The envelope-retention observation stays historical evidence; the terminal
+  topology does not become a target recovery contract.
+
+"Add a resume path" is therefore not a local backlog item here, and must not be
+filed as one.
 
 ## Next safe coding task
 
