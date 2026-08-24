@@ -7,17 +7,22 @@ fixture contract v3.0. They preserve executable TypeScript design research for
 P4 classification; they do not define the future Python schema or runtime
 owner.
 
-The mandatory provenance boundary is:
+The mandatory provenance series is:
 
-- executable Commit A:
+- initial executable Commit A:
   `c7491451c0cf89f50c7f603c93227292e59eb0dd`;
-- fixture Commit B: the later commit that adds `fixtures/experiment/` and this
-  document.
+- initial fixture Commit B: `5fe0281f60a53a5c3bc3bf59861714dc16be5a15`;
+- final A-equivalent correction:
+  `13e7303ba0a097163c049c0a260c12f4953164cd`, which moves deterministic model
+  responses into `given`, removes adapter setup from `when`, and derives reveal
+  section order from executable output;
+- final B-equivalent fixture repin: the later commit that updates every fixture
+  to the final A-equivalent SHA.
 
-Every fixture pins the full Commit A SHA. Commit A contains the adapter
+Every fixture pins the full final A-equivalent SHA. The A commits contain the adapter
 registry, named executable source test and rules, full-result verifier,
 normalizers and deterministic exporter. Commit B contains no executable
-changes. Do not squash these commits.
+changes. Do not amend or squash these commits.
 
 The local verifier resolves every declared ID, verifies that Commit A is an
 ancestor, verifies that the adapter blob and other executable provenance did

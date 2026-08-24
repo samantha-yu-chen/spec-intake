@@ -117,7 +117,7 @@
   "legacy_context": {
     "adapter": {
       "id": "spec-intake.fixture-adapter.v3",
-      "source_revision": "c7491451c0cf89f50c7f603c93227292e59eb0dd",
+      "source_revision": "13e7303ba0a097163c049c0a260c12f4953164cd",
       "source_tests": [
         "spec-intake.test.fixture-adapter-registry"
       ],
