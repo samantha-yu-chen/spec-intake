@@ -65,8 +65,12 @@ has an executable current behaviour. This does not mean every historical design
 promise is complete. In particular, the emitted resume URL does not make a
 frozen session editable: the executable phase table currently keeps `frozen`
 terminal. The freeze fixtures preserve that actual boundary rather than
-claiming a correction transition that does not exist. P4 decides whether the
-behaviour is retained, historical only, or superseded.
+claiming a correction transition that does not exist. P4 has since classified
+this repository's 21 fixtures as 18 `required_in_python`, 1
+`superseded_with_reason` (`spec-intake.drifting-submission-frozen`) and 2
+`historical_only` (`spec-intake.fatigue-signal-clear`,
+`spec-intake.fatigue-signal-recorded`); `CURRENT-DIRECTION.md` carries the
+per-fixture reasons.
 
 ## Semantic boundary
 
