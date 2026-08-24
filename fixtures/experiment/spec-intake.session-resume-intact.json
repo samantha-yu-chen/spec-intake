@@ -1,0 +1,91 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.session-resume-intact",
+  "source_repository": "spec-intake",
+  "capability": "intake.session-resume",
+  "status": "legacy_behaviour",
+  "given": {
+    "session": {
+      "id": "fixture-session",
+      "createdAt": "2026-08-18T09:00:00.000Z",
+      "updatedAt": "2026-08-18T09:00:00.000Z",
+      "phase": "panel",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Show overdue records."
+        },
+        {
+          "role": "assistant",
+          "content": "Which date boundary applies?"
+        }
+      ],
+      "events": [
+        {
+          "kind": "answer",
+          "at": "2026-08-18T09:00:00.000Z",
+          "turn": 1,
+          "data": {
+            "slot": "audience",
+            "value": "Operations",
+            "source": "stated",
+            "quote": "operations"
+          }
+        }
+      ],
+      "turns": [
+        {
+          "at": "2026-08-18T09:00:00.000Z",
+          "phase": "gathering",
+          "requesterChars": 24,
+          "agentChars": 100,
+          "eventsRecorded": 1
+        }
+      ],
+      "owner": null,
+      "documents": null,
+      "ticketId": null,
+      "frozenAt": null,
+      "freezeReason": null
+    }
+  },
+  "when": {
+    "operation": "spec-intake.session.resume",
+    "mode": "round_trip"
+  },
+  "expected": {
+    "outcome": "PASS",
+    "code": "SESSION_RESUMED_INTACT",
+    "result": {
+      "phase": "panel",
+      "message_count": 2,
+      "event_count": 1,
+      "turn_count": 1,
+      "content_equal": false
+    },
+    "owner": "none",
+    "exit_condition": "none",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.resumed-session-preserves-conversation"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "c7491451c0cf89f50c7f603c93227292e59eb0dd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.session-resume"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: PASS compares the production store round-trip and proves the legacy session content resumes intact."
+  }
+}

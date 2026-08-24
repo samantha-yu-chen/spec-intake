@@ -1,0 +1,135 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.dependency-order-blocked",
+  "source_repository": "spec-intake",
+  "capability": "intake.dependency-ordering",
+  "status": "legacy_behaviour",
+  "given": {
+    "pair": {
+      "human": {
+        "title": "Overdue record view",
+        "problem": "Operators rebuild a list by hand.",
+        "outcome": "One read-only view shows overdue records.",
+        "statements": [
+          {
+            "id": "H1",
+            "kind": "requirement",
+            "text": "Show overdue records.",
+            "source": "stated"
+          },
+          {
+            "id": "H2",
+            "kind": "requirement",
+            "text": "Sort oldest first.",
+            "source": "drafted_confirmed"
+          },
+          {
+            "id": "H3",
+            "kind": "constraint",
+            "text": "Write nothing.",
+            "source": "stated"
+          }
+        ],
+        "happy_path": [
+          "Open the view",
+          "Read overdue records"
+        ],
+        "out_of_scope": [
+          "Sending messages"
+        ],
+        "what_would_make_this_fail": [
+          "The due-date boundary is ambiguous"
+        ],
+        "half_value": "The unsorted list still has value.",
+        "blast_radius_ceiling": "Read-only access to synthetic records."
+      },
+      "tech": {
+        "approach": "One read-only query and view.",
+        "items": [
+          {
+            "id": "T1",
+            "title": "Overdue query",
+            "detail": "Select overdue records.",
+            "derived_from": [
+              "H1"
+            ],
+            "depends_on": [],
+            "acceptance": [
+              {
+                "given": "an overdue record",
+                "when": "the query runs",
+                "then": "the record is returned",
+                "adjudicated_by": "synthetic-check-one"
+              }
+            ]
+          },
+          {
+            "id": "T2",
+            "title": "Oldest-first view",
+            "detail": "Order the query result.",
+            "derived_from": [
+              "H2"
+            ],
+            "depends_on": [
+              "T1"
+            ],
+            "acceptance": [
+              {
+                "given": "two overdue records",
+                "when": "the view opens",
+                "then": "the older record is first",
+                "adjudicated_by": "synthetic-check-two"
+              }
+            ]
+          }
+        ],
+        "ticket_order": [
+          "T2",
+          "T1"
+        ]
+      }
+    }
+  },
+  "when": {
+    "operation": "spec-intake.spec-pair.check"
+  },
+  "expected": {
+    "outcome": "BLOCK",
+    "code": "DEPENDENCY_ORDER_BLOCKED",
+    "result": {
+      "finding_codes": [
+        "dependency_after_dependent"
+      ],
+      "findings": [
+        {
+          "code": "dependency_after_dependent",
+          "subject": "T2"
+        }
+      ]
+    },
+    "owner": "spec-intake.spec-author",
+    "exit_condition": "spec-intake.dependency-order-corrected",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.dependency-precedes-dependent"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "c7491451c0cf89f50c7f603c93227292e59eb0dd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.spec-pair-integrity"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: BLOCK names the correctable ordering prerequisite; the aligned-pair case executes the corrected order and returns ALLOW."
+  }
+}

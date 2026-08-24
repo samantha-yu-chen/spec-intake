@@ -1,0 +1,49 @@
+{
+  "fixture_version": "3.0",
+  "fixture_id": "spec-intake.malformed-structured-output-refused",
+  "source_repository": "spec-intake",
+  "capability": "intake.malformed-output-refusal",
+  "status": "legacy_behaviour",
+  "given": {},
+  "when": {
+    "operation": "spec-intake.generation.attempt",
+    "model_outputs": [
+      {
+        "human": {},
+        "tech": {}
+      }
+    ]
+  },
+  "expected": {
+    "outcome": "REFUSE",
+    "code": "STRUCTURED_MODEL_OUTPUT_REFUSED",
+    "result": {
+      "attempts": 1,
+      "refusal": "spec-intake.structured-output-invalid"
+    },
+    "owner": "spec-intake.generator-operator",
+    "exit_condition": "spec-intake.valid-structured-output-provided",
+    "invalidated_evidence": []
+  },
+  "invariants": [
+    "intake.malformed-structured-output-fails-closed"
+  ],
+  "legacy_context": {
+    "adapter": {
+      "id": "spec-intake.fixture-adapter.v3",
+      "source_revision": "c7491451c0cf89f50c7f603c93227292e59eb0dd",
+      "source_tests": [
+        "spec-intake.test.fixture-adapter-registry"
+      ],
+      "source_rules": [
+        "spec-intake.rule.structured-generation"
+      ],
+      "verifier_rule": "spec-intake.verify.fixture-v3",
+      "outcome_rule": "spec-intake.normalize.outcome-v3",
+      "result_rule": "spec-intake.normalize.result-v3",
+      "recovery_rule": "spec-intake.normalize.recovery-v3",
+      "invalidated_evidence_rule": "none"
+    },
+    "normalization": "Adapter-derived shared outcome and recovery metadata: REFUSE means the production structured parser could not form an evaluable pair; the valid generation case proves recovery."
+  }
+}
