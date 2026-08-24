@@ -108,6 +108,33 @@ to state backwards.
 "Add a resume path" is therefore not a local backlog item here, and must not be
 filed as one.
 
+### Collision families that bind this repository
+
+P4 adjudicated seven collision families. Three of them touch fixtures exported
+here. They are recorded below, not re-decided; this repository does not reopen
+them and does not hold a competing definition.
+
+- **`evidence`** — affects `spec-intake.stated-answer-provenance` and
+  `spec-intake.drafted-confirmed-answer-provenance`. Intake provenance,
+  including the `stated` versus `drafted-confirmed` provenance label, is a claim
+  with a label. It is not FACT and it is not Z2 evidence. Agents produce claims;
+  the Harness produces deterministic, identity-bound evidence. FACT and OPINION
+  are separate evidence classes, and DECISION is a separate append-only ledger
+  record. Nothing becomes authority by relabelling. See v0.10 §2.2 and
+  §4.5–§4.8.
+- **`outcome-case`** — affects nine fixtures here, including the trace,
+  dependency-ordering, structured-generation, freeze and submission cases. The
+  requester-authored `outcome` sentence is an intended-result claim, not the
+  persistent Outcome Case. The Outcome Case runs from signal through scale,
+  pivot, stop or retirement, and joins Change at spec seal and Artifact at
+  Activation. See v0.10 §9.2, §9.9 and §9.15.
+- **`sealing`** — affects `spec-intake.one-way-submission-recorded`. Sealing has
+  exactly one authoritative meaning: a Z2 transition over the complete spec and
+  acceptance set with version-pinned authority, requiring an already OPEN
+  Outcome Case unless the spec explicitly declares a SYSTEM maintenance outcome.
+  Spec Intake submission is a supporting mechanism with a different local
+  subject, not an alternate seal authority. See v0.10 §4.2 and §9.15.
+
 ## Next safe coding task
 
 P3.3 extraction is complete on `migration/p33-spec-intake-fixtures-v3`. It
