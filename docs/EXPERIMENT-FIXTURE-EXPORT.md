@@ -7,6 +7,20 @@ fixture contract v3.0. They preserve executable TypeScript design research for
 P4 classification; they do not define the future Python schema or runtime
 owner.
 
+**Superseded by outcome:** that classification is no longer pending. Independent
+review is complete, and root P4 has catalogued and accepted this export from
+this repository's accepted `main` `524a3d3`: 21 fixtures, no gaps, classified 18
+`required_in_python`, 1 `superseded_with_reason` and 2 `historical_only`. The
+adjudication of record is
+`../prod-eng-govrn-op-model/docs/p4-fixture-catalogue-adjudication.md`, with the
+machine record in
+`../prod-eng-govrn-op-model/catalogue/experiment-fixture-catalogue.json`. No
+merge SHA is quoted for the P4 record itself; cite the document. All 21
+fixtures are retained whatever their disposition, and `CURRENT-DIRECTION.md`
+carries the per-fixture dispositions. Being catalogued changes nothing about
+ownership: `source_repository` means provenance only, and it assigns this
+repository no future runtime or repository owner, which stays deferred to P6.
+
 The mandatory provenance series is:
 
 - initial executable Commit A:
