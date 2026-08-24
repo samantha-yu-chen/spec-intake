@@ -11,7 +11,7 @@ The mandatory provenance series is:
 
 - initial executable Commit A:
   `c7491451c0cf89f50c7f603c93227292e59eb0dd`;
-- initial fixture Commit B: `5fe0281f60a53a5c3bc3bf59861714dc16be5a15`;
+- initial fixture Commit B: `5fe0281a7d729660ff4b10733813bd00e5b18656`;
 - final A-equivalent correction:
   `13e7303ba0a097163c049c0a260c12f4953164cd`, which moves deterministic model
   responses into `given`, removes adapter setup from `when`, and derives reveal
